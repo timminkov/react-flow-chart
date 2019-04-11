@@ -4,7 +4,7 @@ import {
   INodeDefaultProps, INodeInnerDefaultProps, IOnCanvasClick, IOnCanvasDrop, IOnDeleteKey, IOnDragCanvas, IOnDragNode,
   IOnLinkCancel, IOnLinkClick, IOnLinkComplete, IOnLinkMouseEnter, IOnLinkMouseLeave, IOnLinkMove,
   IOnLinkStart, IOnNodeClick, IOnPortPositionChange, IPortDefaultProps, IPortsDefaultProps, LinkDefault, LinkWrapper,
-  NodeDefault, NodeInnerDefault, NodeWrapper, PortDefault, PortsDefault, PortWrapper,
+  NodeDefault, NodeInnerDefault, NodeWrapper, PortDefault, PortsDefault, PortWrapper, IOnClickAddButton
 } from '../../'
 
 export interface IFlowChartCallbacks {
@@ -22,6 +22,7 @@ export interface IFlowChartCallbacks {
   onCanvasClick: IOnCanvasClick
   onDeleteKey: IOnDeleteKey
   onNodeClick: IOnNodeClick
+  onClickAddButton: IOnClickAddButton
 }
 
 export interface IFlowChartComponents {
@@ -68,6 +69,7 @@ export const FlowChart = (props: IFlowChartProps) => {
       onCanvasClick,
       onDeleteKey,
       onNodeClick,
+      onClickAddButton,
     },
     Components: {
       CanvasOuter = CanvasOuterDefault,
@@ -111,7 +113,7 @@ export const FlowChart = (props: IFlowChartProps) => {
           {...nodeCallbacks}
         >
           <NodeInner node={nodes[nodeId]}/>
-          <Ports>
+          <Ports links={Object.values(links)} onClickAddButton={onClickAddButton} node={nodes[nodeId]} >
             { Object.keys(nodes[nodeId].ports).map((portId) => (
               <PortWrapper
                 key={portId}

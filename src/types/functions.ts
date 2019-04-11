@@ -8,6 +8,8 @@ export type IOnDragCanvas = (event: MouseEvent, dragData: DraggableData) => void
 
 export type IOnPortPositionChange = (node: INode, port: IPort, position: IPosition) => void
 
+export type IOnClickAddButton = (node: INode, port: IPort) => void
+
 export interface IOnLinkBaseEvent {
   linkId: string,
   startEvent: MouseEvent,
