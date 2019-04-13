@@ -1,7 +1,7 @@
 import { v4 } from 'uuid'
 import {
   IChart, IOnCanvasClick, IOnCanvasDrop, IOnDeleteKey, IOnDragCanvas, IOnDragNode, IOnLinkCancel,
-  IOnLinkComplete, IOnLinkMouseEnter, IOnLinkMouseLeave, IOnLinkMove, IOnLinkStart, IOnNodeClick, IOnPortPositionChange, IOnClickAddButton
+  IOnLinkComplete, IOnLinkMouseEnter, IOnLinkMouseLeave, IOnLinkMove, IOnLinkStart, IOnNodeClick, IOnPortPositionChange, IOnClickAddButton, IOnClickLinkAddButton
 } from '../'
 
 /**
@@ -178,6 +178,59 @@ export const onClickAddButton: IOnClickAddButton = (node, port) => (chart: IChar
       portId: leftPortId,
     },
   }
+
+  return chart
+}
+
+export const onClickLinkAddButton: IOnClickLinkAddButton = (link, midpoint) => (chart: IChart) => {
+  const nodeId = v4()
+  const leftPortId = v4()
+  const rightPortId = v4()
+
+  chart.nodes[nodeId] = {
+    id: nodeId,
+    position: midpoint,
+    type: 'input-output',
+    ports: {},
+  }
+
+  chart.nodes[nodeId].ports[rightPortId] = {
+    id: rightPortId,
+    type: 'right',
+  }
+
+  chart.nodes[nodeId].ports[leftPortId] = {
+    id: leftPortId,
+    type: 'left',
+  }
+
+  const linkId = v4()
+  chart.links[linkId] = {
+    id: linkId,
+    from: {
+      nodeId: link.from.nodeId,
+      portId: link.from.portId,
+    },
+    to: {
+      nodeId: nodeId,
+      portId: leftPortId,
+    },
+  }
+
+  const linkId2= v4()
+  chart.links[linkId2] = {
+    id: linkId2,
+    from: {
+      nodeId: nodeId,
+      portId: rightPortId,
+    },
+    to: {
+      nodeId: link.to.nodeId,
+      portId: link.to.portId,
+    }
+  }
+
+  delete chart.links[link.id]
 
   return chart
 }

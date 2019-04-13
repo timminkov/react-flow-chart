@@ -1,5 +1,9 @@
 import * as React from 'react'
-import { generateCurvePath, ILink, IOnLinkClick, IOnLinkMouseEnter, IOnLinkMouseLeave, IPosition } from '../../'
+import {
+  generateCurvePath, ILink, IOnLinkClick,
+  IOnLinkMouseEnter, IOnLinkMouseLeave, IPosition,
+  IOnClickLinkAddButton
+} from '../../'
 
 export interface ILinkDefaultProps {
   link: ILink
@@ -10,6 +14,7 @@ export interface ILinkDefaultProps {
   onLinkClick: IOnLinkClick
   isHovered: boolean
   isSelected: boolean
+  onClickLinkAddButton: IOnClickLinkAddButton
 }
 
 export const LinkDefault = ({
@@ -21,8 +26,10 @@ export const LinkDefault = ({
   onLinkClick,
   isHovered,
   isSelected,
+  onClickLinkAddButton,
 }: ILinkDefaultProps) => {
   const points = generateCurvePath(startPos, endPos)
+  const midpoint = { x: (startPos.x + endPos.x) / 2, y: (startPos.y + endPos.y) / 2 }
 
   return (
     <svg style={{ overflow: 'visible', position: 'absolute', cursor: 'pointer', left: 0, right: 0 }}>
@@ -54,6 +61,20 @@ export const LinkDefault = ({
           e.stopPropagation()
         } }
       />
+      { (isHovered || isSelected) &&
+        <circle
+          r="6"
+          cx={midpoint.x}
+          cy={midpoint.y}
+          fill="red"
+          onMouseEnter={() => onLinkMouseEnter({ linkId: link.id })}
+          onMouseLeave={() => onLinkMouseLeave({ linkId: link.id })}
+          onClick={(e) => {
+            onClickLinkAddButton(link, midpoint)
+            e.stopPropagation()
+          } }
+        />
+      }
       <circle
         r="4"
         cx={endPos.x}

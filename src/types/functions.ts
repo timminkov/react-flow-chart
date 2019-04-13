@@ -1,5 +1,5 @@
 import { DraggableData } from 'react-draggable'
-import { INode, IPort } from './chart'
+import { INode, IPort, ILink } from './chart'
 import { IPosition } from './generics'
 
 export type IOnDragNode = (event: MouseEvent, dragData: DraggableData, id: string) => void
@@ -9,6 +9,8 @@ export type IOnDragCanvas = (event: MouseEvent, dragData: DraggableData) => void
 export type IOnPortPositionChange = (node: INode, port: IPort, position: IPosition) => void
 
 export type IOnClickAddButton = (node: INode, port: IPort) => void
+
+export type IOnClickLinkAddButton = (link: ILink, midpoint: IPosition) => void
 
 export interface IOnLinkBaseEvent {
   linkId: string,

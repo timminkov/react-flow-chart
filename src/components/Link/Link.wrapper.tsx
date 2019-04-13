@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { IChart, ILink, IOnLinkMouseEnter, IOnLinkMouseLeave } from '../../'
+import { IChart, ILink, IOnLinkMouseEnter, IOnLinkMouseLeave, IOnClickLinkAddButton } from '../../'
 import { ILinkDefaultProps, LinkDefault } from './Link.default'
 import { getLinkPosition } from './utils'
 
@@ -10,6 +10,7 @@ export interface ILinkWrapperProps {
   onLinkMouseLeave: IOnLinkMouseLeave
   onLinkClick: IOnLinkMouseLeave
   Component?: React.SFC<ILinkDefaultProps>
+  onClickLinkAddButton: IOnClickLinkAddButton
 }
 
 export const LinkWrapper = ({
@@ -19,6 +20,7 @@ export const LinkWrapper = ({
   onLinkMouseEnter,
   onLinkMouseLeave,
   onLinkClick,
+  onClickLinkAddButton,
 }: ILinkWrapperProps) => {
   const startPos = getLinkPosition(chart, link.from.nodeId, link.from.portId)
 
@@ -42,6 +44,7 @@ export const LinkWrapper = ({
       onLinkClick={onLinkClick}
       isSelected={chart.selected.type === 'link' && chart.selected.id === link.id}
       isHovered={chart.hovered.type === 'link' && chart.hovered.id === link.id}
+      onClickLinkAddButton={onClickLinkAddButton}
     />
   )
 }
